@@ -38,12 +38,9 @@ app.put('/movies/:id', movieController.updateMovie);
 app.delete('/movies/:id', movieController.deleteMovie);
 
 // Define routes for directors
-app.get('/directors', directorController.getAllDirectors);
+app.get('/directors/lastName/:lastName', directorController.getDirectorByLastName);
 app.get('/directors/:id', directorController.getDirectorById);
-app.get(
-    '/directors/:firstName?/:lastName?',
-    directorController.getDirectorByName
-);
+app.get('/directors', directorController.getAllDirectors);
 app.post('/directors', directorController.createDirector);
 app.put('/directors/:id', directorController.updateDirector);
 app.delete('/directors/:id', directorController.deleteDirector);

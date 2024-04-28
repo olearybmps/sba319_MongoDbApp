@@ -17,35 +17,30 @@ const getDirectorById = async (req, res) => {
         if (!director) {
             return res.status(404).json({ error: 'Director not found' });
         }
+        res.json(director); // Send the director as the response
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
 };
 
-// Get a director by first name, last name, or both
-const getDirectorByName = async (req, res) => {
-  try {
-    const { firstName, lastName } = req.params;
-    const query = {};
+// Get director by lastName
+const getDirectorByLastName = async (req, res) => {
+    try {
+        const { lastName } = req.params;
+        console.log('Last Name:', lastName);
 
-    if (firstName) {
-      query.firstName = firstName;
+        const directors = await Director.find({ lastName });
+        console.log('Directors:', directors);
+
+        if (directors.length === 0) {
+            return res.status(404).json({ error: 'No directors found' });
+        }
+
+        res.json(directors);
+    } catch (error) {
+        console.error('Error retrieving directors:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-
-    if (lastName) {
-      query.lastName = lastName;
-    }
-
-    const directors = await Director.find(query);
-
-    if (directors.length === 0) {
-      return res.status(404).json({ error: 'No directors found' });
-    }
-
-    res.json(directors);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
 };
 
 // Create a director(s)
@@ -98,7 +93,7 @@ const deleteDirector = async (req, res) => {
 module.exports = {
     getAllDirectors,
     getDirectorById,
-    getDirectorByName,
+    getDirectorByLastName,
     createDirector,
     updateDirector,
     deleteDirector,
