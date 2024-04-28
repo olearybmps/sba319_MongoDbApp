@@ -48,11 +48,16 @@ const getDirectorByName = async (req, res) => {
   }
 };
 
-// Create a director
+// Create a director(s)
 const createDirector = async (req, res) => {
     try {
-        const director = await Director.create(req.body);
-        res.status(201).json(director);
+        if (Array.isArray(req.body)) {
+            const directors = await Director.insertMany(req.body);
+            res.status(201).json(directors);
+        } else {
+            const director = await Director.create(req.body);
+            res.status(201).json(director);
+        }
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }

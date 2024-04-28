@@ -81,8 +81,13 @@ const getMoviesByDirector = async (req, res) => {
 // Create a movie
 const createMovie = async (req, res) => {
     try {
-        const movie = await Movie.create(req.body);
-        res.status(201).json(movie);
+        if (Array.isArray(req.body)) {
+            const movies = await Movie.insertMany(req.body);
+            res.status(201).json(movies);
+        } else {
+            const movie = await Movie.create(req.body);
+            res.status(201).json(movie);
+        }
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }

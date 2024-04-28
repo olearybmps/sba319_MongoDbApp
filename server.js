@@ -13,6 +13,9 @@ const port = process.env.PORT || 5000;
 // Import function to connect to DB
 const connectToDb = require('./config/connectToDb');
 
+// Parse incoming request bodies in JSON format
+app.use(express.json());
+
 // Import CORS middleware
 const cors = require('cors');
 

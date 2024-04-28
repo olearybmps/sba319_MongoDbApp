@@ -22,11 +22,16 @@ const getGenreById = async (req, res) => {
     }
 };
 
-// Create a genre
+// Create a genre(s)
 const createGenre = async (req, res) => {
     try {
-        const genre = await Genre.create(req.body);
-        res.status(201).json(genre);
+        if (Array.isArray(req.body)) {
+            const genres = await Genre.insertMany(req.body);
+            res.status(201).json(genres);
+        } else {
+            const genre = await Genre.create(req.body);
+            res.status(201).json(genre);
+        }
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
